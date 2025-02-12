@@ -1,65 +1,82 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Shipment List</title>
-
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .table-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .table-container h1 {
+            margin-bottom: 30px;
+            font-weight: bold;
+            color: #333;
+        }
+        .table thead th {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: 600;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn-action {
+            margin: 0 5px;
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <div class="table-container">
+            <h1 class="text-center"><i class="fas fa-list"></i> Shipment List</h1>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>AWB Number</th>
+                        <th>Receiver</th>
+                        <th>Shipper</th>
+                        <th>Booking Date</th>
+                        <th>Weight</th>
+                        <th>COD Amount (AED)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shipment in shipments %}
+                    <tr>
+                        <td>{{ shipment.awb_number }}</td>
+                        <td>{{ shipment.receiver }}</td>
+                        <td>{{ shipment.shipper }}</td>
+                        <td>{{ shipment.booking_date }}</td>
+                        <td>{{ shipment.weight }}</td>
+                        <td>{{ shipment.cod_amount }}</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-primary btn-action"><i class="fas fa-edit"></i></a>
+                            <a href="#" class="btn btn-sm btn-danger btn-action"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <h2>Shipment List</h2>
-
-    <table border="1">
-
-        <tr>
-
-            <th>AWB Number</th>
-
-            <th>Shipper</th>
-
-            <th>Receiver</th>
-
-            <th>Booking Date</th>
-
-            <th>Product Type</th>
-
-            <th>Pieces</th>
-
-            <th>COD Amount</th>
-
-        </tr>
-
-        {% for shipment in shipments %}
-
-        <tr>
-
-            <td>{{ shipment.awb_number }}</td>
-
-            <td>{{ shipment.shipper }}</td>
-
-            <td>{{ shipment.receiver }}</td>
-
-            <td>{{ shipment.booking_date }}</td>
-
-            <td>{{ shipment.product_type }}</td>
-
-            <td>{{ shipment.pieces }}</td>
-
-            <td>{{ shipment.cod_amount }}</td>
-
-        </tr>
-
-        {% endfor %}
-
-    </table>
-
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>

@@ -1,10 +1,3 @@
-
-from django.shortcuts import render, redirect
-
-from .forms import ShipmentForm
-
-
-
 from django.shortcuts import render, redirect
 
 from .models import Shipment
