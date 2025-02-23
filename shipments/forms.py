@@ -1,28 +1,22 @@
 from django import forms
-
-from .models import Shipment
-
-
+from .models import Shipment, Sender, Receiver, ShipmentCost
 
 class ShipmentForm(forms.ModelForm):
-
     class Meta:
-
         model = Shipment
-
         fields = '__all__'
 
-        widgets = {
+class SenderForm(forms.ModelForm):
+    class Meta:
+        model = Sender
+        fields = '__all__'
 
-            'shipper_address': forms.Textarea(attrs={'rows': 2}),
+class ReceiverForm(forms.ModelForm):
+    class Meta:
+        model = Receiver
+        fields = '__all__'
 
-            'receiver_address': forms.Textarea(attrs={'rows': 2}),
-
-            'special_instruction': forms.Textarea(attrs={'rows': 2}),
-
-            'item_description': forms.Textarea(attrs={'rows': 2}),
-
-            'booking_date': forms.DateInput(attrs={'type': 'date'}),
-
-            'booking_time': forms.TimeInput(attrs={'type': 'time'}),
-        }
+class ShipmentCostForm(forms.ModelForm):
+    class Meta:
+        model = ShipmentCost
+        fields = '__all__'

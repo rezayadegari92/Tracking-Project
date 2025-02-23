@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Shipment</title>
+</head>
+<body>
+    <h2>Create a New Shipment</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <h3>Sender Details</h3>
+        {{ sender_form.as_p }}
+
+        <h3>Receiver Details</h3>
+        {{ receiver_form.as_p }}
+
+        <h3>Shipment Details</h3>
+        {{ shipment_form.as_p }}
+
+        <h3>Shipment Cost</h3>
+        {{ shipment_cost_form.as_p }}
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

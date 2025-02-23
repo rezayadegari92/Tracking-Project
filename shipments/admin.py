@@ -1,34 +1,33 @@
 from django.contrib import admin
 from .models import Sender, Receiver, Shipment, ShipmentCost
 
-# مدل فرستنده به صورت جداگانه
-class SenderAdmin(admin.ModelAdmin):
-    list_display = ('name', 'city', 'contact_number')
-    search_fields = ('name', 'city')
+# چون الان Sender و Receiver به Shipment متصل هستند، این کد بدون خطا کار خواهد کرد
+class SenderInline(admin.StackedInline):
+    model = Sender
+    extra = 1
+    can_delete = False
 
-# مدل گیرنده به صورت جداگانه
 class ReceiverInline(admin.StackedInline):
     model = Receiver
     extra = 1
+    can_delete = False
 
-# مدل هزینه به صورت جداگانه
 class ShipmentCostInline(admin.StackedInline):
     model = ShipmentCost
     extra = 1
+    can_delete = False
 
 @admin.register(Shipment)
 class ShipmentAdmin(admin.ModelAdmin):
     list_display = ('awb_number', 'sender', 'receiver', 'booking_date', 'product_type', 'pieces')
     search_fields = ('awb_number', 'sender__name', 'receiver__name')
     list_filter = ('booking_date', 'product_type')
+    inlines = [ShipmentCostInline]
 
-    # نمایش فرستنده، گیرنده و هزینه در یکجا
-    inlines = [ReceiverInline, ShipmentCostInline]
-
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        # نمایش تمام فیلدها
-        return form
+@admin.register(Sender)
+class SenderAdmin(admin.ModelAdmin):
+    list_display = ('name', 'city', 'contact_number')
+    search_fields = ('name', 'city')
 
 @admin.register(Receiver)
 class ReceiverAdmin(admin.ModelAdmin):

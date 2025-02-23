@@ -10,7 +10,6 @@ class Sender(models.Model):
     contact_person = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=20)
     mobile_number = models.CharField(max_length=20, blank=True, null=True)
-    shipment = models.ForeignKey('Shipment', on_delete=models.CASCADE , related_name="receivers")
     def __str__(self):
         return f"{self.name} - {self.city}"
 
@@ -33,8 +32,9 @@ class Receiver(models.Model):
 class Shipment(models.Model):
     awb_number = models.CharField(max_length=50, unique=True)
     reference_number = models.CharField(max_length=50, blank=True, null=True)
-    sender = models.ForeignKey(Sender, on_delete=models.CASCADE)
-    receiver = models.ForeignKey(Receiver, on_delete=models.CASCADE)
+
+    sender = models.OneToOneField(Sender, on_delete=models.CASCADE, related_name="shipment")
+    receiver = models.OneToOneField(Receiver, on_delete=models.CASCADE, related_name="shipment")
 
     booking_date = models.DateField()
     booking_time = models.TimeField()
