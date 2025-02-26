@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipment Details</title>
+</head>
+<body>
+    <h2>Shipment Details</h2>
+
+    <h3>Shipper Information</h3>
+    <p><strong>Name:</strong> {{ shipment.shipper.shipper_name }}</p>
+    <p><strong>City:</strong> {{ shipment.shipper.city }}</p>
+
+    <h3>Receiver Information</h3>
+    <p><strong>Name:</strong> {{ shipment.receiver_name }}</p>
+    <p><strong>City:</strong> {{ shipment.receiver_city }}</p>
+
+    <h3>Shipment Information</h3>
+    <p><strong>AWB Number:</strong> {{ shipment.awb_number }}</p>
+    <p><strong>Product Type:</strong> {{ shipment.product_type }}</p>
+    <p><strong>Pieces:</strong> {{ shipment.pieces }}</p>
+
+    <h3>Payment Details</h3>
+    <p><strong>COD Amount:</strong> {{ shipment.cod_amount }} AED</p>
+    <p><strong>Base Price:</strong> {{ shipment.base_price }} AED</p>
+    <p><strong>Additional Charges:</strong> {{ shipment.additional_charges }} AED</p>
+
+    <a href="{% url 'create_shipment' %}">Create Another Shipment</a>
+</body>
+</html>
+

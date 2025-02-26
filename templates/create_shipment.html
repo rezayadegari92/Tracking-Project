@@ -10,17 +10,11 @@
     <form method="post">
         {% csrf_token %}
 
-        <h3>Sender Details</h3>
-        {{ sender_form.as_p }}
+        <h3>Shipper Information</h3>
+        {{ shipper_form.as_p }}
 
-        <h3>Receiver Details</h3>
-        {{ receiver_form.as_p }}
-
-        <h3>Shipment Details</h3>
+        <h3>Receiver Information</h3>
         {{ shipment_form.as_p }}
-
-        <h3>Shipment Cost</h3>
-        {{ shipment_cost_form.as_p }}
 
         <button type="submit">Submit</button>
     </form>
