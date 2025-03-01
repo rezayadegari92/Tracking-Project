@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ShipperForm, ShipmentForm
 from .models import Shipment
 
+def home(request):
+    return render(request, 'home.html')
 def create_shipment(request):
     if request.method == "POST":
         shipper_form = ShipperForm(request.POST)
