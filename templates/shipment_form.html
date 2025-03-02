@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipper and Shipment Management</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Shipper and Shipment Management</h1>
+
+        <!-- Combined Shipper and Shipment Form -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title mb-0">Shipper and Shipment Information</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'save_shipper_and_shipment' %}">
+                    {% csrf_token %}
+
+                    <!-- Shipper Section -->
+                    <h3 class="mb-3">Shipper Details</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="shipper_name" class="form-label">Shipper Name</label>
+                            <input type="text" class="form-control" id="shipper_name" name="shipper_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contact_person" class="form-label">Contact Person</label>
+                            <input type="text" class="form-control" id="contact_person" name="contact_person" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="country" class="form-label">Country</label>
+                            <input type="text" class="form-control" id="country" name="country" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control" id="city" name="city" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contact_number" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control" id="contact_number" name="contact_number" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="mobile_number" class="form-label">Mobile Number</label>
+                            <input type="text" class="form-control" id="mobile_number" name="mobile_number">
+                        </div>
+                    </div>
+
+                    <!-- Shipment Section -->
+                    <h3 class="mt-5 mb-3">Shipment Details</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="receiver_name" class="form-label">Receiver Name</label>
+                            <input type="text" class="form-control" id="receiver_name" name="receiver_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receiver_address" class="form-label">Receiver Address</label>
+                            <textarea class="form-control" id="receiver_address" name="receiver_address" rows="3" required></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receiver_country" class="form-label">Receiver Country</label>
+                            <input type="text" class="form-control" id="receiver_country" name="receiver_country" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receiver_city" class="form-label">Receiver City</label>
+                            <input type="text" class="form-control" id="receiver_city" name="receiver_city" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receiver_location" class="form-label">Receiver Location</label>
+                            <input type="text" class="form-control" id="receiver_location" name="receiver_location">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receiver_contact_person" class="form-label">Receiver Contact Person</label>
+                            <input type="text" class="form-control" id="receiver_contact_person" name="receiver_contact_person" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receiver_contact_number" class="form-label">Receiver Contact Number</label>
+                            <input type="text" class="form-control" id="receiver_contact_number" name="receiver_contact_number" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="receiver_mobile_number" class="form-label">Receiver Mobile Number</label>
+                            <input type="text" class="form-control" id="receiver_mobile_number" name="receiver_mobile_number">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="awb_number" class="form-label">AWB Number</label>
+                            <input type="text" class="form-control" id="awb_number" name="awb_number" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="reference_number" class="form-label">Reference Number</label>
+                            <input type="text" class="form-control" id="reference_number" name="reference_number">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="booking_date" class="form-label">Booking Date</label>
+                            <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="booking_time" class="form-label">Booking Time</label>
+                            <input type="time" class="form-control" id="booking_time" name="booking_time" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="product_type" class="form-label">Product Type</label>
+                            <input type="text" class="form-control" id="product_type" name="product_type" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="pieces" class="form-label">Pieces</label>
+                            <input type="number" class="form-control" id="pieces" name="pieces" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="weight" class="form-label">Weight (kg)</label>
+                            <input type="number" step="0.01" class="form-control" id="weight" name="weight" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="v_weight" class="form-label">Volume Weight (kg)</label>
+                            <input type="number" step="0.01" class="form-control" id="v_weight" name="v_weight" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="c_weight" class="form-label">Chargeable Weight (kg)</label>
+                            <input type="number" step="0.01" class="form-control" id="c_weight" name="c_weight" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="item_description" class="form-label">Item Description</label>
+                            <textarea class="form-control" id="item_description" name="item_description" rows="3" required></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="special_instruction" class="form-label">Special Instruction</label>
+                            <textarea class="form-control" id="special_instruction" name="special_instruction" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cod_amount" class="form-label">COD Amount (AED)</label>
+                            <input type="number" step="0.01" class="form-control" id="cod_amount" name="cod_amount" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="base_price" class="form-label">Base Price (AED)</label>
+                            <input type="number" step="0.01" class="form-control" id="base_price" name="base_price" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="additional_charges" class="form-label">Additional Charges (AED)</label>
+                            <input type="number" step="0.01" class="form-control" id="additional_charges" name="additional_charges" required>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Save Shipper and Shipment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
