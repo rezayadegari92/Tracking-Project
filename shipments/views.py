@@ -1,21 +1,24 @@
-
+from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from .models import *
 
 def home(request):
     reference_number = request.GET.get('reference_number')
     shipment = None
+
     if reference_number:
-        shipment = get_object_or_404(Shipment, reference_number=reference_number)
+        try:
+            shipment = Shipment.objects.get(reference_number=reference_number)
+        except Shipment.DoesNotExist:
+            # If no shipment is found, display a user-friendly error message
+            messages.error(request, f'No shipment found with the reference number: {reference_number}')
+    elif 'reference_number' in request.GET:  # Check if reference_number is provided but empty
+        messages.error(request, 'Reference number is invalid. Please enter a valid reference number.')
+
     return render(request, 'home.html', {'shipment': shipment})
 
-from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
-from .models import Shipper, Shipment
-from .forms import ShipperForm, ShipmentForm
 
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Shipper, Shipment
+
 
 def save_shipper_and_shipment(request):
     if request.method == 'POST':

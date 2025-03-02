@@ -41,7 +41,7 @@
         }
         .hero {
             background: url('https://via.placeholder.com/1200x400') no-repeat center center/cover;
-            color: #6c6666;
+            color: #5e5e5e;
             padding: 100px 20px;
             text-align: center;
         }
@@ -150,7 +150,15 @@
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
-
+        {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         <!-- Shipment Details -->
         {% if shipment %}
             <div class="shipment-details">
@@ -176,10 +184,8 @@
                 <p><strong>Base Price:</strong> {{ shipment.base_price }} AED</p>
                 <p><strong>Additional Charges:</strong> {{ shipment.additional_charges }} AED</p>
             </div>
-        {% elif request.GET.reference_number %}
-            <div class="alert alert-warning">
-                No shipment found with the reference number: <strong>{{ request.GET.reference_number }}</strong>
-            </div>
+        {% else  %}
+
         {% endif %}
     </section>
 
@@ -211,7 +217,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2023 Shipment Tracking. All rights reserved.</p>
+        <p>&copy; 2025 Shipment Tracking. All rights reserved.</p>
     </footer>
 
     <!-- Bootstrap 5 JS -->
