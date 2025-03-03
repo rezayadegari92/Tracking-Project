@@ -19,7 +19,9 @@ def home(request):
 
 
 
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def save_shipper_and_shipment(request):
     if request.method == 'POST':
         try:

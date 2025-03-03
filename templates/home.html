@@ -15,7 +15,7 @@
         header {
             background-color: #004a99;
             color: white;
-            padding: 60px 20px;
+            padding: 30px 20px;
             text-align: center;
         }
         header h1 {
@@ -42,7 +42,7 @@
         .hero {
             background: url('https://via.placeholder.com/1200x400') no-repeat center center/cover;
             color: #5e5e5e;
-            padding: 100px 20px;
+            padding: 20px 20px;
             text-align: center;
         }
         .hero h1 {
@@ -56,7 +56,7 @@
         }
         .tracking-form {
             background-color: white;
-            padding: 30px;
+            padding: 20px;
             margin: 40px auto;
             max-width: 800px;
             border-radius: 10px;
@@ -133,8 +133,25 @@
         <a href="#">Track Shipment</a>
         <a href="#">Services</a>
         <a href="#">Contact Us</a>
+        <a href="http://127.0.0.1:8000/admin/">Admin</a>
     </nav>
-
+    <nav class="text-center">
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Sign Up</a>
+    {% endif %}
+    </nav>
+    {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+    {% endif %}
     <!-- Hero Section -->
     <section class="hero">
         <h1>Welcome to Shipment Tracking</h1>
@@ -150,15 +167,7 @@
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
-        {% if messages %}
-            <div class="mt-4">
-                {% for message in messages %}
-                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+
         <!-- Shipment Details -->
         {% if shipment %}
             <div class="shipment-details">
