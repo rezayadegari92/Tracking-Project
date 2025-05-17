@@ -12,7 +12,7 @@ class ShipmentForm(forms.ModelForm):
         fields = [
             'receiver_name', 'receiver_address', 'receiver_country', 'receiver_city',
             'receiver_location', 'receiver_contact_person', 'receiver_contact_number', 'receiver_mobile_number',
-            'awb_number', 'reference_number', 'booking_date', 'booking_time', 'product_type', 'pieces',
+            'product_type', 'pieces',
             'weight', 'v_weight', 'c_weight', 'item_description', 'special_instruction',
             'cod_amount', 'base_price', 'additional_charges'
         ]
