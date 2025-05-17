@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +43,9 @@ INSTALLED_APPS = [
     'shipments',
     'tracking',
     'accounts',
+    'django_countries',
+    'cities_light',
+
 ]
 
 MIDDLEWARE = [
@@ -133,3 +137,5 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
 ]
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
