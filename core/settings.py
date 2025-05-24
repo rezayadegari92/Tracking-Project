@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'django_countries',
     'cities_light',
-
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +139,4 @@ AUTHENTICATION_BACKENDS = [
 ]
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/home/'
+CITIES_LIGHT_GEONAMES_USERNAME = 'rezayadegari'

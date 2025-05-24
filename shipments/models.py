@@ -38,6 +38,9 @@ def generate_reference_number():
             new_number = 980102991 + 1
         return f"REF-{new_number:06d}"
 
+def zip_code_validator(zip_code):
+    if not zip_code.isdigit() or len(zip_code) != 5:
+        raise ValueError("Invalid zip code")
 
 class TimeStampedMixin(models.Model):
     """Abstract base model that provides created_at and updated_at timestamps."""
@@ -54,10 +57,12 @@ class Shipper(TimeStampedMixin):
     address = models.TextField()
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
+    zip_code = models.CharField(max_length=10, blank=True, null=True, validators=[zip_code_validator])
     location = models.CharField(max_length=100, blank=True, null=True)
     contact_person = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=20)
     mobile_number = models.CharField(max_length=20, blank=True, null=True)
+    identity_image = models.ImageField(upload_to='shipper_identity/', null=True, blank=True, help_text="Upload a copy of your ID or passport")
 
     def __str__(self):
         return f"{self.shipper_name} - {self.city}"
@@ -73,6 +78,7 @@ class Shipment(TimeStampedMixin):
     receiver_address = models.TextField()
     receiver_country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, related_name='receiver_shipments')
     receiver_city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='receiver_shipments')
+    receiver_zip_code = models.CharField(max_length=10, blank=True, null=True, validators=[zip_code_validator])
     receiver_location = models.CharField(max_length=100, blank=True, null=True)
     receiver_contact_person = models.CharField(max_length=100)
     receiver_contact_number = models.CharField(max_length=20)
@@ -103,11 +109,22 @@ class Shipment(TimeStampedMixin):
         choices=SERVICE_TYPE_CHOICES,
         default='outbound',
     )
+
+    PAYMENT_STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('paid', 'Paid'),
+    ]
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PAYMENT_STATUS_CHOICES,
+        default='pending',
+    )
     
     # Package Details
     quantity = models.PositiveIntegerField()
     grossweight = models.DecimalField(max_digits=10, decimal_places=2)
     width = models.DecimalField(max_digits=10, decimal_places=2)
+    chargeable_weight = models.DecimalField(max_digits=10, decimal_places=2)
     length = models.DecimalField(max_digits=10, decimal_places=2)
     height = models.DecimalField(max_digits=10, decimal_places=2)
     volumetricks = models.DecimalField(max_digits=10, decimal_places=3)
@@ -124,11 +141,19 @@ class Shipment(TimeStampedMixin):
 
     def save(self, *args, **kwargs):
         """Override save method to generate AWB and reference numbers and calculate volumetric weight."""
-        if not self.awb_number:
+        if not self.awb_number and self.payment_status == 'paid':
             self.awb_number = generate_awb_number()
-        if not self.reference_number:
+        elif not self.awb_number and self.payment_status == 'pending':
+            self.awb_number = 'Pending'
+        if not self.reference_number and self.payment_status == 'paid':
             self.reference_number = generate_reference_number()
+        elif not self.reference_number and self.payment_status == 'pending':
+            self.reference_number = 'Pending'
         self.volumetricks = self.length * self.width * self.height / 5000
+        if self.volumetricks > self.grossweight:
+            self.chargeable_weight = self.volumetricks
+        else:
+            self.chargeable_weight = self.grossweight
         super().save(*args, **kwargs)
 
     def __str__(self):
