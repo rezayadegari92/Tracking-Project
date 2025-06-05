@@ -1,7 +1,15 @@
 from django.db import transaction, models
 from django.utils import timezone
 from cities_light.models import Country, City
+from django.core.exceptions import ValidationError
+import random
+import string
 
+def generate_temp_number(prefix):
+    """Generate a temporary unique number for pending shipments."""
+    # Generate a random 8-digit number
+    random_digits = ''.join(random.choices(string.digits, k=8))
+    return f"{prefix}{random_digits}"
 
 def generate_awb_number():
     """
@@ -10,7 +18,7 @@ def generate_awb_number():
     """
     with transaction.atomic():
         last_shipment = Shipment.objects.select_for_update().order_by('-id').first()
-        if last_shipment and last_shipment.awb_number:
+        if last_shipment and last_shipment.awb_number and last_shipment.awb_number.startswith('AWB-'):
             try:
                 last_number = int(last_shipment.awb_number.replace('AWB-', ''))
             except ValueError:
@@ -20,7 +28,6 @@ def generate_awb_number():
             new_number = 980102991 + 1
         return f"AWB-{new_number:06d}"
 
-
 def generate_reference_number():
     """
     Generate a unique reference number using atomic transaction to prevent race conditions.
@@ -28,7 +35,7 @@ def generate_reference_number():
     """
     with transaction.atomic():
         last_shipment = Shipment.objects.select_for_update().order_by('-id').first()
-        if last_shipment and last_shipment.reference_number:
+        if last_shipment and last_shipment.reference_number and last_shipment.reference_number.startswith('REF-'):
             try:
                 last_number = int(last_shipment.reference_number.replace('REF-', ''))
             except ValueError:
@@ -39,8 +46,8 @@ def generate_reference_number():
         return f"REF-{new_number:06d}"
 
 def zip_code_validator(zip_code):
-    if not zip_code.isdigit() or len(zip_code) != 5:
-        raise ValueError("Invalid zip code")
+    if not zip_code.isdigit() :
+        raise ValidationError("Invalid zip code")
 
 class TimeStampedMixin(models.Model):
     """Abstract base model that provides created_at and updated_at timestamps."""
@@ -86,8 +93,8 @@ class Shipment(TimeStampedMixin):
     
     # Shipment Details
     awb_number = models.CharField(max_length=50, unique=True)
-    reference_number = models.CharField(max_length=50, blank=True, null=True, unique=True)
-    forwarder = models.CharField(max_length=50, default="Dubai")
+    reference_number = models.CharField(max_length=50, unique=True)
+    forwarder = models.CharField(max_length=50, blank=True, null=True)
     
     PRODUCT_TYPE_CHOICES = [
         ('doc', 'Document'),
@@ -124,46 +131,70 @@ class Shipment(TimeStampedMixin):
     quantity = models.PositiveIntegerField()
     grossweight = models.DecimalField(max_digits=10, decimal_places=2)
     width = models.DecimalField(max_digits=10, decimal_places=2)
-    chargeable_weight = models.DecimalField(max_digits=10, decimal_places=2)
+    chargeable_weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     length = models.DecimalField(max_digits=10, decimal_places=2)
     height = models.DecimalField(max_digits=10, decimal_places=2)
-    volumetricks = models.DecimalField(max_digits=10, decimal_places=3)
+    volumetricks = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
     
     # Additional Information
-    price_of_shipment = models.DecimalField(max_digits=10, decimal_places=2)
+    price_of_shipment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     item_description = models.TextField()
     special_instruction = models.TextField(blank=True, null=True)
     
     # Payment Information
-    cod_amount = models.DecimalField(max_digits=10, decimal_places=2, help_text="COD in AED")
-    base_price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Base shipping cost")
+    cod_amount = models.DecimalField(max_digits=10, decimal_places=2, help_text="COD in AED", default=0)
+    base_price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Base shipping cost", default=0)
     additional_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, help_text="Additional fees")
 
-    def save(self, *args, **kwargs):
-        """Override save method to generate AWB and reference numbers and calculate volumetric weight."""
-        if not self.awb_number and self.payment_status == 'paid':
-            self.awb_number = generate_awb_number()
-        elif not self.awb_number and self.payment_status == 'pending':
-            self.awb_number = 'Pending'
-        if not self.reference_number and self.payment_status == 'paid':
-            self.reference_number = generate_reference_number()
-        elif not self.reference_number and self.payment_status == 'pending':
-            self.reference_number = 'Pending'
-        self.volumetricks = self.length * self.width * self.height / 5000
-        if self.volumetricks > self.grossweight:
-            self.chargeable_weight = self.volumetricks
+    def clean(self):
+        super().clean()
+        # Calculate volumetric weight and chargeable weight
+        if self.length and self.width and self.height and self.quantity:
+            self.volumetricks = (self.length * self.width * self.height * self.quantity) / 5000
+            self.chargeable_weight = max(self.volumetricks, self.grossweight)
         else:
-            self.chargeable_weight = self.grossweight
+            self.volumetricks = 0
+            self.chargeable_weight = self.grossweight if self.grossweight else 0
+
+    def save(self, *args, **kwargs):
+        self.clean()  # Call clean to ensure calculations are done
+        
+        # Handle AWB and reference numbers based on payment status
+        if self.payment_status == 'paid':
+            try:
+                # Generate permanent numbers for paid shipments
+                if not self.awb_number or self.awb_number.startswith('PENDING'):
+                    self.awb_number = generate_awb_number()
+                if not self.reference_number or self.reference_number.startswith('PENDING'):
+                    self.reference_number = generate_reference_number()
+            except Exception as e:
+                raise ValidationError(f"Error generating tracking numbers: {str(e)}")
+        else:
+            # Generate temporary numbers for pending shipments
+            if not self.awb_number:
+                self.awb_number = generate_temp_number('PENDING')
+            if not self.reference_number:
+                self.reference_number = generate_temp_number('PENDING')
+
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Shipment {self.awb_number}"
 
 
+
+def validate_image_file(file):
+    if not file.content_type.startswith('image'):
+        raise ValidationError("File must be an image")
+        
+def validate_image_file_size(file):
+    if file.size > 1024 * 1024 * 10:
+        raise ValidationError("File must be less than 10MB")
+
 class ShipmentImage(models.Model):
     """Model for storing shipment-related images."""
     shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='shipment_images/')
+    image = models.ImageField(upload_to='shipment_images/', validators=[validate_image_file, validate_image_file_size])
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

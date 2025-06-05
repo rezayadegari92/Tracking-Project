@@ -63,10 +63,16 @@
                             <div class="mb-3">
                                 <label for="id_shipper_country" class="form-label required-field">Country</label>
                                 {{ shipper_form.shipper_country|add_class:"form-select" }}
+                                {% if shipper_form.shipper_country.errors %}
+                                    <div class="text-danger">{{ shipper_form.shipper_country.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_shipper_city" class="form-label required-field">City</label>
                                 {{ shipper_form.shipper_city|add_class:"form-select" }}
+                                {% if shipper_form.shipper_city.errors %}
+                                    <div class="text-danger">{{ shipper_form.shipper_city.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <!-- Receiver Location -->
@@ -75,10 +81,16 @@
                             <div class="mb-3">
                                 <label for="id_receiver_country" class="form-label required-field">Country</label>
                                 {{ form.receiver_country|add_class:"form-select" }}
+                                {% if form.receiver_country.errors %}
+                                    <div class="text-danger">{{ form.receiver_country.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_receiver_city" class="form-label required-field">City</label>
                                 {{ form.receiver_city|add_class:"form-select" }}
+                                {% if form.receiver_city.errors %}
+                                    <div class="text-danger">{{ form.receiver_city.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -98,32 +110,53 @@
                             <div class="mb-3">
                                 <label for="id_shipper_name" class="form-label required-field">Name</label>
                                 {{ shipper_form.shipper_name|add_class:"form-control" }}
+                                {% if shipper_form.shipper_name.errors %}
+                                    <div class="text-danger">{{ shipper_form.shipper_name.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_address" class="form-label required-field">Address</label>
                                 {{ shipper_form.address|add_class:"form-control" }}
+                                {% if shipper_form.address.errors %}
+                                    <div class="text-danger">{{ shipper_form.address.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_zip_code" class="form-label">Zip Code</label>
                                 {{ shipper_form.zip_code|add_class:"form-control" }}
+                                {% if shipper_form.zip_code.errors %}
+                                    <div class="text-danger">{{ shipper_form.zip_code.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="id_location" class="form-label">Location</label>
                                 {{ shipper_form.location|add_class:"form-control" }}
+                                {% if shipper_form.location.errors %}
+                                    <div class="text-danger">{{ shipper_form.location.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_contact_person" class="form-label required-field">Contact Person</label>
                                 {{ shipper_form.contact_person|add_class:"form-control" }}
+                                {% if shipper_form.contact_person.errors %}
+                                    <div class="text-danger">{{ shipper_form.contact_person.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_contact_number" class="form-label required-field">Contact Number</label>
                                 {{ shipper_form.contact_number|add_class:"form-control" }}
+                                {% if shipper_form.contact_number.errors %}
+                                    <div class="text-danger">{{ shipper_form.contact_number.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_mobile_number" class="form-label">Mobile Number</label>
                                 {{ shipper_form.mobile_number|add_class:"form-control" }}
+                                {% if shipper_form.mobile_number.errors %}
+                                    <div class="text-danger">{{ shipper_form.mobile_number.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -143,32 +176,53 @@
                             <div class="mb-3">
                                 <label for="id_receiver_name" class="form-label required-field">Name</label>
                                 {{ form.receiver_name|add_class:"form-control" }}
+                                {% if form.receiver_name.errors %}
+                                    <div class="text-danger">{{ form.receiver_name.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_receiver_address" class="form-label required-field">Address</label>
                                 {{ form.receiver_address|add_class:"form-control" }}
+                                {% if form.receiver_address.errors %}
+                                    <div class="text-danger">{{ form.receiver_address.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_receiver_zip_code" class="form-label">Zip Code</label>
                                 {{ form.receiver_zip_code|add_class:"form-control" }}
+                                {% if form.receiver_zip_code.errors %}
+                                    <div class="text-danger">{{ form.receiver_zip_code.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="id_receiver_location" class="form-label">Location</label>
                                 {{ form.receiver_location|add_class:"form-control" }}
+                                {% if form.receiver_location.errors %}
+                                    <div class="text-danger">{{ form.receiver_location.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_receiver_contact_person" class="form-label required-field">Contact Person</label>
                                 {{ form.receiver_contact_person|add_class:"form-control" }}
+                                {% if form.receiver_contact_person.errors %}
+                                    <div class="text-danger">{{ form.receiver_contact_person.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_receiver_contact_number" class="form-label required-field">Contact Number</label>
                                 {{ form.receiver_contact_number|add_class:"form-control" }}
+                                {% if form.receiver_contact_number.errors %}
+                                    <div class="text-danger">{{ form.receiver_contact_number.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_receiver_mobile_number" class="form-label">Mobile Number</label>
                                 {{ form.receiver_mobile_number|add_class:"form-control" }}
+                                {% if form.receiver_mobile_number.errors %}
+                                    <div class="text-danger">{{ form.receiver_mobile_number.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -188,28 +242,32 @@
                             <div class="mb-3">
                                 <label for="id_product_type" class="form-label required-field">Product Type</label>
                                 {{ form.product_type|add_class:"form-select" }}
+                                {% if form.product_type.errors %}
+                                    <div class="text-danger">{{ form.product_type.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_service" class="form-label required-field">Service</label>
                                 {{ form.service|add_class:"form-select" }}
-                            </div>
-                            <div class="mb-3">
-                                <label for="id_payment_status" class="form-label required-field">Payment Status</label>
-                                {{ form.payment_status|add_class:"form-select" }}
+                                {% if form.service.errors %}
+                                    <div class="text-danger">{{ form.service.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="id_quantity" class="form-label required-field">Quantity</label>
                                 {{ form.quantity|add_class:"form-control" }}
+                                {% if form.quantity.errors %}
+                                    <div class="text-danger">{{ form.quantity.errors.0 }}</div>
+                                {% endif %}
                             </div>
                             <div class="mb-3">
                                 <label for="id_grossweight" class="form-label required-field">Gross Weight</label>
                                 {{ form.grossweight|add_class:"form-control" }}
-                            </div>
-                            <div class="mb-3">
-                                <label for="id_chargeable_weight" class="form-label required-field">Chargeable Weight</label>
-                                {{ form.chargeable_weight|add_class:"form-control" }}
+                                {% if form.grossweight.errors %}
+                                    <div class="text-danger">{{ form.grossweight.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -229,18 +287,27 @@
                             <div class="mb-3">
                                 <label for="id_length" class="form-label required-field">Length</label>
                                 {{ form.length|add_class:"form-control" }}
+                                {% if form.length.errors %}
+                                    <div class="text-danger">{{ form.length.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="id_width" class="form-label required-field">Width</label>
                                 {{ form.width|add_class:"form-control" }}
+                                {% if form.width.errors %}
+                                    <div class="text-danger">{{ form.width.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="id_height" class="form-label required-field">Height</label>
                                 {{ form.height|add_class:"form-control" }}
+                                {% if form.height.errors %}
+                                    <div class="text-danger">{{ form.height.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -260,18 +327,27 @@
                             <div class="mb-3">
                                 <label for="id_price_of_shipment" class="form-label required-field">Price</label>
                                 {{ form.price_of_shipment|add_class:"form-control" }}
+                                {% if form.price_of_shipment.errors %}
+                                    <div class="text-danger">{{ form.price_of_shipment.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="id_cod_amount" class="form-label">COD Amount</label>
                                 {{ form.cod_amount|add_class:"form-control" }}
+                                {% if form.cod_amount.errors %}
+                                    <div class="text-danger">{{ form.cod_amount.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="id_base_price" class="form-label required-field">Base Price</label>
                                 {{ form.base_price|add_class:"form-control" }}
+                                {% if form.base_price.errors %}
+                                    <div class="text-danger">{{ form.base_price.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -291,12 +367,18 @@
                             <div class="mb-3">
                                 <label for="id_item_description" class="form-label required-field">Item Description</label>
                                 {{ form.item_description|add_class:"form-control" }}
+                                {% if form.item_description.errors %}
+                                    <div class="text-danger">{{ form.item_description.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="id_special_instruction" class="form-label">Special Instructions</label>
                                 {{ form.special_instruction|add_class:"form-control" }}
+                                {% if form.special_instruction.errors %}
+                                    <div class="text-danger">{{ form.special_instruction.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -316,6 +398,9 @@
                             <div class="mb-3">
                                 <label for="id_identity_image" class="form-label required-field">Upload ID/Passport</label>
                                 {{ form.identity_image|add_class:"form-control" }}
+                                {% if form.identity_image.errors %}
+                                    <div class="text-danger">{{ form.identity_image.errors.0 }}</div>
+                                {% endif %}
                                 <small class="form-text text-muted">Please upload a clear copy of your ID or passport</small>
                             </div>
                         </div>

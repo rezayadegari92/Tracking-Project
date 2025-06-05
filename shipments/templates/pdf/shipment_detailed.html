@@ -1,0 +1,147 @@
+{% extends "pdf/base_pdf.html" %}
+
+{% block content %}
+<div class="section">
+    <h2 class="section-title">Detailed Shipment Report</h2>
+    <div class="info-row">
+        <span class="label">AWB Number:</span>
+        <span class="value">{{ shipment.awb_number }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Reference Number:</span>
+        <span class="value">{{ shipment.reference_number }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Created Date:</span>
+        <span class="value">{{ shipment.created_at|date:"F j, Y H:i" }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Last Updated:</span>
+        <span class="value">{{ shipment.updated_at|date:"F j, Y H:i" }}</span>
+    </div>
+</div>
+
+<div class="section">
+    <h3 class="section-title">Shipper Information</h3>
+    <div class="info-row">
+        <span class="label">Name:</span>
+        <span class="value">{{ shipper.shipper_name }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Address:</span>
+        <span class="value">{{ shipper.address }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">City:</span>
+        <span class="value">{{ shipper.city }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Country:</span>
+        <span class="value">{{ shipper.country }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Contact Person:</span>
+        <span class="value">{{ shipper.contact_person }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Contact Number:</span>
+        <span class="value">{{ shipper.contact_number }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Mobile Number:</span>
+        <span class="value">{{ shipper.mobile_number|default:"N/A" }}</span>
+    </div>
+</div>
+
+<div class="section">
+    <h3 class="section-title">Receiver Information</h3>
+    <div class="info-row">
+        <span class="label">Name:</span>
+        <span class="value">{{ shipment.receiver_name }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Address:</span>
+        <span class="value">{{ shipment.receiver_address }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">City:</span>
+        <span class="value">{{ shipment.receiver_city }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Country:</span>
+        <span class="value">{{ shipment.receiver_country }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Contact Person:</span>
+        <span class="value">{{ shipment.receiver_contact_person }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Contact Number:</span>
+        <span class="value">{{ shipment.receiver_contact_number }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Mobile Number:</span>
+        <span class="value">{{ shipment.receiver_mobile_number|default:"N/A" }}</span>
+    </div>
+</div>
+
+<div class="section">
+    <h3 class="section-title">Shipment Details</h3>
+    <div class="info-row">
+        <span class="label">Product Type:</span>
+        <span class="value">{{ shipment.get_product_type_display }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Service Type:</span>
+        <span class="value">{{ shipment.get_service_display }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Forwarder:</span>
+        <span class="value">{{ shipment.forwarder }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Quantity:</span>
+        <span class="value">{{ shipment.quantity }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Gross Weight:</span>
+        <span class="value">{{ shipment.grossweight }} kg</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Dimensions:</span>
+        <span class="value">{{ shipment.length }} x {{ shipment.width }} x {{ shipment.height }} cm</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Volumetric Weight:</span>
+        <span class="value">{{ shipment.volumetricks }} kg</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Item Description:</span>
+        <span class="value">{{ shipment.item_description }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Special Instructions:</span>
+        <span class="value">{{ shipment.special_instruction|default:"N/A" }}</span>
+    </div>
+</div>
+
+<div class="section">
+    <h3 class="section-title">Payment Details</h3>
+    <div class="info-row">
+        <span class="label">Base Price:</span>
+        <span class="value">AED {{ shipment.base_price }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Additional Charges:</span>
+        <span class="value">AED {{ shipment.additional_charges }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">COD Amount:</span>
+        <span class="value">AED {{ shipment.cod_amount }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Total Price:</span>
+        <span class="value">AED {{ shipment.price_of_shipment }}</span>
+    </div>
+</div>
+{% endblock %} 

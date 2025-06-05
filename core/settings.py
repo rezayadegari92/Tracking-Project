@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shipments',
-    'tracking',
     'accounts',
     'django_countries',
     'cities_light',

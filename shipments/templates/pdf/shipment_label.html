@@ -1,0 +1,88 @@
+{% extends "pdf/base_pdf.html" %}
+
+{% block content %}
+<style>
+    @page {
+        size: A6;
+        margin: 1cm;
+    }
+    .label-container {
+        text-align: center;
+        padding: 1cm;
+        border: 2px solid #000;
+    }
+    .awb-number {
+        font-size: 24pt;
+        font-weight: bold;
+        margin: 1cm 0;
+    }
+    .barcode {
+        margin: 1cm 0;
+    }
+    .barcode img {
+        max-width: 100%;
+        height: auto;
+    }
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5cm;
+        margin: 1cm 0;
+    }
+    .info-item {
+        text-align: left;
+    }
+    .info-label {
+        font-weight: bold;
+        font-size: 10pt;
+    }
+    .info-value {
+        font-size: 12pt;
+    }
+</style>
+
+<div class="label-container">
+    <div class="company-logo">
+        <h1>{{ company_name }}</h1>
+    </div>
+
+    <div class="awb-number">
+        {{ shipment.awb_number }}
+    </div>
+
+    <div class="barcode">
+        <img src="data:image/png;base64,{{ barcode_image }}" alt="Barcode">
+    </div>
+
+    <div class="info-grid">
+        <div class="info-item">
+            <div class="info-label">From:</div>
+            <div class="info-value">{{ shipper.city }}, {{ shipper.country }}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">To:</div>
+            <div class="info-value">{{ shipment.receiver_city }}, {{ shipment.receiver_country }}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Weight:</div>
+            <div class="info-value">{{ shipment.grossweight }} kg</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Vol. Weight:</div>
+            <div class="info-value">{{ shipment.volumetricks }} kg</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Dimensions:</div>
+            <div class="info-value">{{ shipment.length }}x{{ shipment.width }}x{{ shipment.height }} cm</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Pieces:</div>
+            <div class="info-value">{{ shipment.quantity }}</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Generated: {{ generated_date|date:"Y-m-d H:i" }}</p>
+    </div>
+</div>
+{% endblock %} 

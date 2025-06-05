@@ -1,0 +1,112 @@
+@page {
+    size: A4;
+    margin: 2cm;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    line-height: 1.4;
+    color: #333;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2cm;
+    border-bottom: 2px solid #000;
+    padding-bottom: 1cm;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 2cm;
+    border-top: 1px solid #000;
+    padding-top: 1cm;
+    font-size: 10pt;
+    color: #666;
+}
+
+.section {
+    margin-bottom: 1cm;
+}
+
+.section-title {
+    font-weight: bold;
+    margin-bottom: 0.5cm;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.2cm;
+    color: #000;
+}
+
+.info-row {
+    margin-bottom: 0.3cm;
+}
+
+.label {
+    font-weight: bold;
+    display: inline-block;
+    width: 200px;
+    color: #444;
+}
+
+.value {
+    display: inline-block;
+    color: #000;
+}
+
+/* Label specific styles */
+.label-container {
+    text-align: center;
+    padding: 1cm;
+    border: 2px solid #000;
+}
+
+.awb-number {
+    font-size: 24pt;
+    font-weight: bold;
+    margin: 1cm 0;
+    color: #000;
+}
+
+.barcode {
+    margin: 1cm 0;
+    text-align: center;
+}
+
+.barcode img {
+    max-width: 100%;
+    height: auto;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5cm;
+    margin: 1cm 0;
+}
+
+.info-item {
+    text-align: left;
+}
+
+.info-label {
+    font-weight: bold;
+    font-size: 10pt;
+    color: #444;
+}
+
+.info-value {
+    font-size: 12pt;
+    color: #000;
+}
+
+/* Company logo placeholder */
+.company-logo {
+    margin-bottom: 1cm;
+}
+
+.company-logo h1 {
+    font-size: 18pt;
+    color: #000;
+    margin: 0;
+} 

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shipment Details{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Shipment Information</h5>
+            <div class="btn-group">
+                <a href="{% url 'shipment_confirmation_pdf' shipment.id %}" class="btn btn-primary">
+                    <i class="fas fa-file-pdf"></i> Download Confirmation
+                </a>
+                {% if shipment.awb_number and shipment.awb_number != '0' %}
+                <a href="{% url 'shipment_pdf' shipment.awb_number %}" class="btn btn-info">
+                    <i class="fas fa-file-pdf"></i> Download Details
+                </a>
+                <a href="{% url 'shipment_label_pdf' shipment.awb_number %}" class="btn btn-success">
+                    <i class="fas fa-tag"></i> Download Label
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Shipper Information</h6>
+                    <p><strong>Name:</strong> {{ shipment.shipper.shipper_name }}</p>
+                    <p><strong>Address:</strong> {{ shipment.shipper.address }}</p>
+                    <p><strong>Contact:</strong> {{ shipment.shipper.contact_person }} ({{ shipment.shipper.contact_number }})</p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Receiver Information</h6>
+                    <p><strong>Name:</strong> {{ shipment.receiver_name }}</p>
+                    <p><strong>Address:</strong> {{ shipment.receiver_address }}</p>
+                    <p><strong>Contact:</strong> {{ shipment.receiver_contact_person }} ({{ shipment.receiver_contact_number }})</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Shipment Details</h6>
+                    <p><strong>AWB Number:</strong> {{ shipment.awb_number }}</p>
+                    <p><strong>Reference Number:</strong> {{ shipment.reference_number }}</p>
+                    <p><strong>Product Type:</strong> {{ shipment.get_product_type_display }}</p>
+                    <p><strong>Service:</strong> {{ shipment.get_service_display }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Package Details</h6>
+                    <p><strong>Quantity:</strong> {{ shipment.quantity }}</p>
+                    <p><strong>Weight:</strong> {{ shipment.grossweight }} kg</p>
+                    <p><strong>Dimensions:</strong> {{ shipment.length }} x {{ shipment.width }} x {{ shipment.height }} cm</p>
+                    <p><strong>Description:</strong> {{ shipment.item_description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %} 
