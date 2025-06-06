@@ -75,6 +75,14 @@ class Shipper(TimeStampedMixin):
         return f"{self.shipper_name} - {self.city}"
 
 
+def get_default_awb():
+    """Generate a default AWB number for new shipments."""
+    return generate_temp_number('PENDING')
+
+def get_default_reference():
+    """Generate a default reference number for new shipments."""
+    return generate_temp_number('PENDING')
+
 class Shipment(TimeStampedMixin):
     """Model for storing shipment information and tracking."""
     # Shipper Information
@@ -92,8 +100,8 @@ class Shipment(TimeStampedMixin):
     receiver_mobile_number = models.CharField(max_length=20, blank=True, null=True)
     
     # Shipment Details
-    awb_number = models.CharField(max_length=50, unique=True)
-    reference_number = models.CharField(max_length=50, unique=True)
+    awb_number = models.CharField(max_length=50, unique=True, default=get_default_awb)
+    reference_number = models.CharField(max_length=50, unique=True, default=get_default_reference)
     forwarder = models.CharField(max_length=50, blank=True, null=True)
     
     PRODUCT_TYPE_CHOICES = [

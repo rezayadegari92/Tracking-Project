@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Shipment Confirmation</title>
+    <title>Detailed Shipment Information</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,12 +15,8 @@
         .company-info {
             margin-bottom: 20px;
         }
-        .barcode {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .barcode img {
-            max-width: 300px;
+        .shipment-info {
+            margin-bottom: 20px;
         }
         .section {
             margin-bottom: 20px;
@@ -30,8 +26,13 @@
         .section-title {
             font-weight: bold;
             margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
+        }
+        .barcode {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .barcode img {
+            max-width: 300px;
         }
         table {
             width: 100%;
@@ -46,17 +47,11 @@
         th {
             background-color: #f5f5f5;
         }
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Shipment Confirmation</h1>
+        <h1>Detailed Shipment Information</h1>
         <div class="company-info">
             <h2>{{ company_name }}</h2>
             <p>{{ company_address }}</p>
@@ -72,7 +67,7 @@
     </div>
 
     <div class="section">
-        <div class="section-title">Shipment Information</div>
+        <div class="section-title">Shipment Details</div>
         <table>
             <tr>
                 <th>Field</th>
@@ -95,8 +90,16 @@
                 <td>{{ shipment.get_product_type_display }}</td>
             </tr>
             <tr>
+                <td>Payment Status</td>
+                <td>{{ shipment.get_payment_status_display }}</td>
+            </tr>
+            <tr>
                 <td>Created Date</td>
                 <td>{{ shipment.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+            <tr>
+                <td>Last Updated</td>
+                <td>{{ shipment.updated_at|date:"Y-m-d H:i" }}</td>
             </tr>
         </table>
     </div>
@@ -121,6 +124,10 @@
                 <td>{{ shipment.shipper.contact_number }}</td>
             </tr>
             <tr>
+                <td>Mobile</td>
+                <td>{{ shipment.shipper.mobile_number }}</td>
+            </tr>
+            <tr>
                 <td>Address</td>
                 <td>{{ shipment.shipper.address }}</td>
             </tr>
@@ -131,6 +138,10 @@
             <tr>
                 <td>Country</td>
                 <td>{{ shipment.shipper.country }}</td>
+            </tr>
+            <tr>
+                <td>Location</td>
+                <td>{{ shipment.shipper.location }}</td>
             </tr>
         </table>
     </div>
@@ -155,6 +166,10 @@
                 <td>{{ shipment.receiver_contact_number }}</td>
             </tr>
             <tr>
+                <td>Mobile</td>
+                <td>{{ shipment.receiver_mobile_number }}</td>
+            </tr>
+            <tr>
                 <td>Address</td>
                 <td>{{ shipment.receiver_address }}</td>
             </tr>
@@ -166,11 +181,15 @@
                 <td>Country</td>
                 <td>{{ shipment.receiver_country }}</td>
             </tr>
+            <tr>
+                <td>Location</td>
+                <td>{{ shipment.receiver_location }}</td>
+            </tr>
         </table>
     </div>
 
     <div class="section">
-        <div class="section-title">Package Details</div>
+        <div class="section-title">Package Information</div>
         <table>
             <tr>
                 <th>Field</th>
@@ -185,19 +204,25 @@
                 <td>{{ shipment.grossweight }} kg</td>
             </tr>
             <tr>
+                <td>Chargeable Weight</td>
+                <td>{{ shipment.chargeable_weight }} kg</td>
+            </tr>
+            <tr>
                 <td>Dimensions (L x W x H)</td>
                 <td>{{ shipment.length }} x {{ shipment.width }} x {{ shipment.height }} cm</td>
+            </tr>
+            <tr>
+                <td>Volumetric Weight</td>
+                <td>{{ shipment.volumetricks }} kg</td>
             </tr>
             <tr>
                 <td>Description</td>
                 <td>{{ shipment.item_description }}</td>
             </tr>
-            {% if shipment.special_instruction %}
             <tr>
                 <td>Special Instructions</td>
                 <td>{{ shipment.special_instruction }}</td>
             </tr>
-            {% endif %}
         </table>
     </div>
 
@@ -216,12 +241,10 @@
                 <td>Additional Charges</td>
                 <td>{{ shipment.additional_charges }} AED</td>
             </tr>
-            {% if shipment.cod_amount > 0 %}
             <tr>
                 <td>COD Amount</td>
                 <td>{{ shipment.cod_amount }} AED</td>
             </tr>
-            {% endif %}
             <tr>
                 <td>Total Price</td>
                 <td>{{ shipment.price_of_shipment }} AED</td>
@@ -230,7 +253,6 @@
     </div>
 
     <div class="footer">
-        <p>This is a computer-generated document. No signature is required.</p>
         <p>Generated on: {{ generated_date|date:"Y-m-d H:i" }}</p>
     </div>
 </body>

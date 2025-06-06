@@ -215,28 +215,32 @@ def shipment_detailed_pdf(request, shipment_id):
 @staff_member_required
 def shipment_label_pdf(request, shipment_id):
     """
-    View for generating shipment label PDF (admin only)
+    View for generating shipment label PDF by ID (admin only)
     """
     shipment = get_object_or_404(Shipment, id=shipment_id)
     return generate_shipment_label_pdf(shipment)
 
 def shipment_pdf(request, awb_number):
-    """Generate a PDF for the shipment details."""
-    try:
-        shipment = Shipment.objects.get(awb_number=awb_number)
-        return generate_shipment_confirmation_pdf(shipment)
-    except Shipment.DoesNotExist:
-        return HttpResponse("Shipment not found", status=404)
+    """
+    View for generating shipment PDF by AWB number
+    """
+    shipment = get_object_or_404(Shipment, awb_number=awb_number)
+    return generate_shipment_confirmation_pdf(shipment)
 
-def shipment_label_pdf(request, awb_number):
-    """Generate a shipping label PDF."""
+def shipment_label_by_awb(request, awb_number):
+    """
+    View for generating shipment label PDF by AWB number
+    """
     try:
+        # First try to find by AWB number
         shipment = Shipment.objects.get(awb_number=awb_number)
-        pdf = generate_shipment_label_pdf(shipment)
-        
-        response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="label_{awb_number}.pdf"'
-        return response
     except Shipment.DoesNotExist:
-        return HttpResponse("Shipment not found", status=404)
+        try:
+            # If not found, try to find by ID
+            shipment = Shipment.objects.get(id=awb_number)
+        except (Shipment.DoesNotExist, ValueError):
+            # If both fail, raise 404
+            raise Http404("No Shipment matches the given query.")
+    
+    return generate_shipment_label_pdf(shipment)
 
