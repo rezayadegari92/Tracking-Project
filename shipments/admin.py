@@ -36,8 +36,8 @@ class ShipmentAdmin(admin.ModelAdmin):
     inlines = [ShipmentImageInline]
     
     def pdf_buttons(self, obj):
-        detailed_url = reverse('shipment_detailed_pdf', args=[obj.id])
-        label_url = reverse('shipment_label_pdf', args=[obj.id])
+        detailed_url = f'/api/v1/shipments/{obj.id}/pdf/detailed/'
+        label_url = f'/api/v1/shipments/{obj.id}/pdf/label/'
         return format_html(
             '<a class="button" href="{}">Detailed PDF</a>&nbsp;'
             '<a class="button" href="{}">Label PDF</a>',

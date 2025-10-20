@@ -1,8 +1,2 @@
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('signup/', views.signup, name='signup'),
-    path('login/', views.user_login, name='login'),
-    path('logout/', views.user_logout, name='logout'),
-]
+# This file is kept for backward compatibility but all URLs are now handled by API
+# The main URLs are now in core/urls.py which includes the API URLs
