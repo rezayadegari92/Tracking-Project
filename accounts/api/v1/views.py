@@ -11,7 +11,8 @@ from .serializers import (
     UserRegistrationSerializer, 
     UserLoginSerializer, 
     UserSerializer, 
-    PasswordChangeSerializer
+    PasswordChangeSerializer,
+    UserProfileSerializer,
 )
 from .permissions import IsOwnerOrAdmin
 
@@ -106,7 +107,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     """
     Retrieve or update user profile.
     """
-    serializer_class = UserSerializer
+    serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
     
     def get_object(self):

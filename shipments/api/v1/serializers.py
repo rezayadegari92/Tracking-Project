@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from django.shortcuts import get_object_or_404
 from cities_light.models import Country, City
 from shipments.models import Shipper, Shipment, ShipmentImage
+from profiles.models import Address
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -78,6 +80,7 @@ class ShipmentCreateSerializer(serializers.ModelSerializer):
     """Serializer for creating shipments."""
     shipper = ShipperSerializer()
     images = ShipmentImageSerializer(many=True, read_only=True)
+    address_uuid = serializers.UUIDField(required=False, write_only=True)
     
     class Meta:
         model = Shipment
@@ -88,7 +91,7 @@ class ShipmentCreateSerializer(serializers.ModelSerializer):
             'receiver_mobile_number', 'product_type', 'service', 'quantity',
             'grossweight', 'width', 'length', 'height', 'item_description',
             'special_instruction', 'cod_amount', 'base_price', 'additional_charges',
-            'images', 'awb_number', 'reference_number', 'payment_status',
+            'images', 'awb_number', 'reference_number', 'payment_status', 'address_uuid',
             'chargeable_weight', 'volumetricks', 'created_at', 'updated_at'
         )
         read_only_fields = (
@@ -98,15 +101,34 @@ class ShipmentCreateSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         shipper_data = validated_data.pop('shipper')
+        address_uuid = validated_data.pop('address_uuid', None)
+        request = self.context.get('request')
+        user = getattr(request, 'user', None)
+
+        if address_uuid and user and user.is_authenticated:
+            address = get_object_or_404(Address, user=user, address_uuid=address_uuid)
+            shipper_data.setdefault('shipper_name', user.get_full_name() or user.username)
+            shipper_data.setdefault('address', address.address)
+            shipper_data.setdefault('country_id', address.country_id)
+            shipper_data.setdefault('city_id', address.city_id)
+            shipper_data.setdefault('zip_code', address.zip_code)
+            shipper_data.setdefault('location', address.location)
+            shipper_data.setdefault('contact_number', address.contact_number)
+            shipper_data.setdefault('mobile_number', address.mobile_number)
+
         shipper_serializer = ShipperSerializer(data=shipper_data)
         shipper_serializer.is_valid(raise_exception=True)
         shipper = shipper_serializer.save()
-        
-        shipment = Shipment.objects.create(
-            shipper=shipper,
-            payment_status='pending',
-            **validated_data
-        )
+
+        create_kwargs = {
+            'shipper': shipper,
+            'payment_status': 'pending',
+            **validated_data,
+        }
+        if user and user.is_authenticated:
+            create_kwargs['created_by'] = user
+
+        shipment = Shipment.objects.create(**create_kwargs)
         return shipment
 
 

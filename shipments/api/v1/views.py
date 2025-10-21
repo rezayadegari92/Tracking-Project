@@ -102,9 +102,8 @@ class ShipmentListView(generics.ListAPIView):
     ordering = ['-created_at']
     
     def get_queryset(self):
-        # For now, return all shipments for authenticated users
-        # Can be refined to filter by user's shipments when user-shipment relationship is established
-        return Shipment.objects.all()
+        user = self.request.user
+        return Shipment.objects.filter(created_by=user)
     
     @swagger_auto_schema(
         operation_description="Get list of user's shipments",

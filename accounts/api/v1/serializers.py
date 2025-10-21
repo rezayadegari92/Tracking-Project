@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from accounts.models import CustomUser
+from profiles.api.v1.serializers import AddressSerializer
+from shipments.api.v1.serializers import ShipmentListSerializer
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -57,6 +59,14 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'user_type', 'date_joined', 'last_login')
         read_only_fields = ('id', 'username', 'date_joined', 'last_login')
+
+
+class UserProfileSerializer(UserSerializer):
+    addresses = AddressSerializer(many=True, read_only=True)
+    shipments = ShipmentListSerializer(many=True, read_only=True)
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ('addresses', 'shipments')
 
 
 class PasswordChangeSerializer(serializers.Serializer):

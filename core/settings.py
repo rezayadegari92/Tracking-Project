@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shipments',
     'accounts',
+    'profiles',
     # 'django_countries',
     'cities_light',
     # DRF and API packages

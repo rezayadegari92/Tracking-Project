@@ -22,9 +22,9 @@ class IsOwnerOrAdmin(permissions.BasePermission):
         if request.user.is_staff:
             return True
         
-        # Users can access their own shipments
-        if hasattr(obj, 'shipper') and hasattr(obj.shipper, 'user'):
-            return obj.shipper.user == request.user
+        # Users can access their own shipments via created_by
+        if hasattr(obj, 'created_by'):
+            return obj.created_by == request.user
         
         # For now, allow access if user is authenticated (can be refined later)
         return request.user.is_authenticated

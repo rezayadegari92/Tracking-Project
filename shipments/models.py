@@ -1,4 +1,5 @@
 from django.db import transaction, models
+from django.conf import settings
 from django.utils import timezone
 from cities_light.models import Country, City
 from django.core.exceptions import ValidationError
@@ -87,6 +88,8 @@ class Shipment(TimeStampedMixin):
     """Model for storing shipment information and tracking."""
     # Shipper Information
     shipper = models.ForeignKey(Shipper, on_delete=models.CASCADE, related_name="shipments")
+    # Ownership
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='shipments')
     
     # Receiver Information
     receiver_name = models.CharField(max_length=100)
